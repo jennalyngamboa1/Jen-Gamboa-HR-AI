@@ -106,9 +106,80 @@ section{max-width:980px;margin:0 auto;padding:4.5rem 2rem;}
 .pill a{color:#6366f1;text-decoration:none;}
 footer{border-top:1px solid #f0f0f0;padding:1.65rem;text-align:center;color:#9ca3af;font-size:0.72rem;background:#fff;letter-spacing:0.04em;}
 @media(max-width:680px){.hero-content{padding:3rem 1.25rem;}.nav-links{display:none;}}
+
+/* ── MODAL STYLES ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,30,0.6);z-index:9999;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:18px;padding:2.25rem;width:100%;max-width:480px;position:relative;box-shadow:0 24px 60px rgba(10,10,30,0.18);animation:modalIn 0.25s ease;}
+@keyframes modalIn{from{opacity:0;transform:translateY(16px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+.modal-close{position:absolute;top:1.1rem;right:1.1rem;background:#f3f4f6;border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6b7280;font-size:1rem;transition:background 0.15s;}
+.modal-close:hover{background:#e5e7eb;color:#111827;}
+.modal-badge{display:inline-flex;align-items:center;gap:6px;background:#eef2ff;color:#4338ca;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:100px;margin-bottom:0.9rem;}
+.modal-title{font-family:"Instrument Serif",serif;font-size:1.6rem;font-weight:400;color:#111827;margin-bottom:0.35rem;letter-spacing:-0.02em;}
+.modal-sub{font-size:0.8rem;color:#6b7280;margin-bottom:1.5rem;line-height:1.6;}
+.form-group{margin-bottom:1rem;}
+.form-label{display:block;font-size:0.74rem;font-weight:600;color:#374151;margin-bottom:0.4rem;}
+.form-label span{color:#6366f1;}
+.form-input,.form-textarea{width:100%;padding:10px 13px;border:1.5px solid #e5e7eb;border-radius:9px;font-family:"Inter",sans-serif;font-size:0.83rem;color:#111827;transition:border-color 0.2s,box-shadow 0.2s;outline:none;background:#fff;}
+.form-input:focus,.form-textarea:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,0.12);}
+.form-textarea{resize:vertical;min-height:100px;line-height:1.6;}
+.modal-submit{width:100%;background:#6366f1;color:#fff;border:none;padding:12px;border-radius:9px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:"Inter",sans-serif;transition:background 0.2s,transform 0.15s;margin-top:0.5rem;}
+.modal-submit:hover{background:#4f46e5;transform:translateY(-1px);}
+.modal-note{font-size:0.7rem;color:#9ca3af;text-align:center;margin-top:0.9rem;line-height:1.6;}
+.modal-success{display:none;text-align:center;padding:1rem 0;}
+.modal-success .success-icon{width:56px;height:56px;background:#eef2ff;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:#6366f1;font-size:24px;}
+.modal-success h3{font-family:"Instrument Serif",serif;font-size:1.4rem;color:#111827;margin-bottom:0.5rem;}
+.modal-success p{font-size:0.82rem;color:#6b7280;line-height:1.7;}
+/* ── SKILLS ── */
+.skills-full{overflow:hidden;max-height:0;transition:max-height 0.5s ease;}
+.skills-full.expanded{max-height:2000px;}
+.skills-full-inner{padding-top:1.25rem;border-top:1px solid #f0f0f0;margin-top:0.75rem;}
+.skills-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:0.5rem;}
+.skill-pill{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:100px;padding:5px 13px;font-size:0.68rem;font-weight:600;color:#166534;}
+/* ── SERVICE CARD EXPAND ── */
+.srv-details{overflow:hidden;max-height:0;transition:max-height 0.4s ease;}
+.srv-details.open{max-height:500px;}
+.srv-details ul{list-style:none;margin:0.75rem 0 0;padding:0;display:flex;flex-direction:column;gap:6px;}
+.srv-details ul li{font-size:0.75rem;color:#374151;display:flex;gap:7px;align-items:flex-start;}
+.srv-details ul li::before{content:"✓";color:#6366f1;font-size:0.68rem;flex-shrink:0;font-weight:700;margin-top:2px;}
+.srv-toggle{display:inline-flex;align-items:center;gap:5px;margin-top:0.75rem;background:none;border:none;color:#6366f1;font-size:0.72rem;font-weight:600;cursor:pointer;font-family:"Inter",sans-serif;padding:0;}
+.srv-toggle i{transition:transform 0.25s;font-size:0.8rem;}
+.srv-toggle.open i{transform:rotate(180deg);}
+
 </style>
 </head>
 <body>
+
+<!-- INQUIRY MODAL -->
+<div class="modal-overlay" id="inquiryModal" onclick="closeModalOnOverlay(event)">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    <div id="modalForm">
+      <div class="modal-badge">&#10022; Book a Session</div>
+      <h2 class="modal-title">Let&rsquo;s work together</h2>
+      <p class="modal-sub">Fill in the details below and Jen will get back to you shortly.</p>
+      <div class="form-group">
+        <label class="form-label" for="inquiryName">Full Name <span>*</span></label>
+        <input class="form-input" id="inquiryName" type="text" placeholder="e.g. Maria Santos"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="inquiryEmail">Email Address <span>*</span></label>
+        <input class="form-input" id="inquiryEmail" type="email" placeholder="e.g. maria@company.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="inquiryMessage">What HR-AI service, topic, or current challenge would you like assistance with? <span>*</span></label>
+        <textarea class="form-textarea" id="inquiryMessage" placeholder="e.g. I want to learn how to use ChatGPT for writing HR policies..."></textarea>
+      </div>
+      <button class="modal-submit" onclick="submitInquiry()">Send Inquiry &rarr;</button>
+      <p class="modal-note">Your inquiry will be sent directly to Jen&rsquo;s email. She usually responds within 1&ndash;2 business days.</p>
+    </div>
+    <div class="modal-success" id="modalSuccess">
+      <div class="success-icon"><i class="ti ti-check"></i></div>
+      <h3>You&rsquo;re all set!</h3>
+      <p>Your inquiry is on its way to Jen.<br/>She&rsquo;ll be in touch within 1&ndash;2 business days.</p>
+    </div>
+  </div>
+</div>
 
 <nav>
   <div class="logo">Jen Gamboa <span>· HR + AI</span></div>
@@ -117,7 +188,7 @@ footer{border-top:1px solid #f0f0f0;padding:1.65rem;text-align:center;color:#9ca
     <a onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Services</a>
     <a onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Pricing</a>
   </div>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Session</button>
+  <button class="nav-cta" onclick="openModal()">Book a Session</button>
 </nav>
 
 <div class="hero">
@@ -128,7 +199,7 @@ footer{border-top:1px solid #f0f0f0;padding:1.65rem;text-align:center;color:#9ca
     <h1>Work smarter.<br>Lead <em>better.</em><br>Use AI in your work.</h1>
     <p class="hero-sub">Practical, beginner-friendly AI coaching for HR professionals &mdash; built by a certified HR practitioner who uses these tools in real HR work every single day.</p>
     <div class="ctas">
-      <button class="btn-p" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Book a Session</button>
+      <button class="btn-p" onclick="openModal()">Book a Session</button>
       <button class="btn-g" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">See What You'll Learn</button>
     </div>
     <div class="stats">
@@ -156,6 +227,49 @@ footer{border-top:1px solid #f0f0f0;padding:1.65rem;text-align:center;color:#9ca
       <button class="read-more-btn" id="readMoreBtn" onclick="toggleAbout()">
         Read my full story <i class="ti ti-chevron-down"></i>
       </button>
+      <button class="read-more-btn" id="skillsBtn" onclick="toggleSkills()" style="margin-top:0.5rem;">
+        My Skills <i class="ti ti-chevron-down"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- SKILLS EXPAND -->
+  <div class="skills-full" id="skillsFull">
+    <div class="skills-full-inner">
+      <p class="bio-p" style="margin-bottom:0.75rem;">A blend of <strong>HR expertise</strong> and <strong>AI-powered tools</strong> &mdash; here&rsquo;s what I bring to every session and every client I work with.</p>
+      <div class="skills-wrap">
+        <span class="skill-pill">AI for Human Resources</span>
+        <span class="skill-pill">AI Prompt Engineering</span>
+        <span class="skill-pill">HR Automation</span>
+        <span class="skill-pill">Workflow Automation</span>
+        <span class="skill-pill">HR Systems Administration</span>
+        <span class="skill-pill">Digital HR Transformation</span>
+        <span class="skill-pill">HR Process Optimization</span>
+        <span class="skill-pill">Employee Lifecycle Management</span>
+        <span class="skill-pill">HR Help Desk &amp; Ticketing Systems</span>
+        <span class="skill-pill">Organizational Development</span>
+        <span class="skill-pill">Employee Experience Strategy</span>
+        <span class="skill-pill">Strategic HR Planning</span>
+        <span class="skill-pill">Performance Management</span>
+        <span class="skill-pill">HR Analytics &amp; Reporting</span>
+        <span class="skill-pill">KPI Monitoring &amp; Dashboard Reporting</span>
+        <span class="skill-pill">Data Analysis &amp; Visualization</span>
+        <span class="skill-pill">Business Process Improvement</span>
+        <span class="skill-pill">Recruitment &amp; Talent Support</span>
+        <span class="skill-pill">Employee Relations Management</span>
+        <span class="skill-pill">Policy Development &amp; Design</span>
+        <span class="skill-pill">Compliance &amp; Audit</span>
+        <span class="skill-pill">Process Mapping &amp; Design</span>
+        <span class="skill-pill">Presentation &amp; Visual Storytelling</span>
+        <span class="skill-pill">Social Media Branding</span>
+        <span class="skill-pill">Canva AI Design</span>
+        <span class="skill-pill">Microsoft Office Suite</span>
+        <span class="skill-pill">Google Workspace</span>
+        <span class="skill-pill">HR Consulting Support</span>
+        <span class="skill-pill">Human-Centered Workplace Solutions</span>
+        <span class="skill-pill">Future-Ready HR Solutions</span>
+        <span class="skill-pill">+ and many more</span>
+      </div>
     </div>
   </div>
 
@@ -186,12 +300,12 @@ footer{border-top:1px solid #f0f0f0;padding:1.65rem;text-align:center;color:#9ca
   <div class="s-title">HR Skills, Powered by AI</div>
   <div class="s-sub">Real topics built around the HR work you already do &mdash; just faster and smarter.</div>
   <div class="srv-grid">
-    <div class="srv-card"><div class="srv-icon"><i class="ti ti-message-circle"></i></div><div class="srv-title">AI for HR Tasks</div><div class="srv-desc">ChatGPT, Claude, Gemini &amp; Canva AI made practical for your daily HR work &mdash; no tech background needed.</div><div class="tags"><span class="tag">Prompting</span><span class="tag">ChatGPT</span><span class="tag">Claude</span><span class="tag">Gemini</span></div></div>
-    <div class="srv-card"><div class="srv-icon"><i class="ti ti-file-text"></i></div><div class="srv-title">Reports &amp; Presentations</div><div class="srv-desc">Write faster, clearer memos, evaluations, KPI summaries, and executive presentations with AI.</div><div class="tags"><span class="tag">Memos</span><span class="tag">Reports</span><span class="tag">Slides</span></div></div>
-    <div class="srv-card"><div class="srv-icon"><i class="ti ti-book"></i></div><div class="srv-title">Handbook &amp; Policy Creation</div><div class="srv-desc">Build clear, labor-compliant HR handbooks and policies faster using AI &mdash; structured, consistent, audit-ready.</div><div class="tags"><span class="tag">Handbook</span><span class="tag">Policy</span><span class="tag">Compliance</span></div></div>
-    <div class="srv-card"><div class="srv-icon"><i class="ti ti-chart-bar"></i></div><div class="srv-title">HR Analytics</div><div class="srv-desc">Read evaluation data, analyze ratings, build simple dashboards and executive summaries. No Excel expertise needed.</div><div class="tags"><span class="tag">Analytics</span><span class="tag">Data</span><span class="tag">Dashboards</span></div></div>
-    <div class="srv-card"><div class="srv-icon"><i class="ti ti-settings"></i></div><div class="srv-title">Process Improvement</div><div class="srv-desc">Practical automation using forms and workflow tools. Save hours on repetitive HR tasks every week.</div><div class="tags"><span class="tag">Workflow</span><span class="tag">Automation</span></div></div>
-    <div class="srv-card"><div class="srv-icon"><i class="ti ti-star"></i></div><div class="srv-title">HR Career Coaching</div><div class="srv-desc">Resume review, interview prep, and career direction &mdash; from an HR professional who's been on both sides of the table.</div><div class="tags"><span class="tag">Resume</span><span class="tag">Interview</span><span class="tag">Career</span></div></div>
+    <div class="srv-card"><div class="srv-icon"><i class="ti ti-message-circle"></i></div><div class="srv-title">AI for HR Tasks</div><div class="srv-desc">ChatGPT, Claude, Gemini &amp; Canva AI made practical for your daily HR work &mdash; no tech background needed.</div><div class="tags"><span class="tag">Prompting</span><span class="tag">ChatGPT</span><span class="tag">Claude</span><span class="tag">Gemini</span></div><button class="srv-toggle" onclick="toggleSrv(this)">See what&rsquo;s included <i class="ti ti-chevron-down"></i></button><div class="srv-details"><ul><li>Understand the difference between ChatGPT, Claude &amp; Gemini</li><li>Write your first real HR prompt live during the session</li><li>Get 3&ndash;5 ready-to-use prompts tailored to your HR role</li><li>Learn do&rsquo;s and don&rsquo;ts of using AI professionally in HR</li><li>Beginner-friendly &mdash; no tech background needed</li></ul></div></div>
+    <div class="srv-card"><div class="srv-icon"><i class="ti ti-file-text"></i></div><div class="srv-title">Reports &amp; Presentations</div><div class="srv-desc">Write faster, clearer memos, evaluations, KPI summaries, and executive presentations with AI.</div><div class="tags"><span class="tag">Memos</span><span class="tag">Reports</span><span class="tag">Slides</span></div><button class="srv-toggle" onclick="toggleSrv(this)">See what&rsquo;s included <i class="ti ti-chevron-down"></i></button><div class="srv-details"><ul><li>Draft KPI summaries, incident reports &amp; exec presentations</li><li>Use AI to structure memos and emails professionally</li><li>Create clear, data-driven HR reports faster</li><li>Build slides using your own HR docs as input</li><li>Refine and polish AI outputs for real HR use</li></ul></div></div>
+    <div class="srv-card"><div class="srv-icon"><i class="ti ti-book"></i></div><div class="srv-title">Handbook &amp; Policy Creation</div><div class="srv-desc">Build clear, labor-compliant HR handbooks and policies faster using AI &mdash; structured, consistent, audit-ready.</div><div class="tags"><span class="tag">Handbook</span><span class="tag">Policy</span><span class="tag">Compliance</span></div><button class="srv-toggle" onclick="toggleSrv(this)">See what&rsquo;s included <i class="ti ti-chevron-down"></i></button><div class="srv-details"><ul><li>Draft labor-compliant handbooks using AI as your writing partner</li><li>Build structured policy documents section by section</li><li>Write NOTDs, NTEs &amp; show cause memos clearly</li><li>Ensure consistency across all HR documentation</li><li>Reduce policy-writing time from days to hours</li></ul></div></div>
+    <div class="srv-card"><div class="srv-icon"><i class="ti ti-chart-bar"></i></div><div class="srv-title">HR Analytics</div><div class="srv-desc">Read evaluation data, analyze ratings, build simple dashboards and executive summaries. No Excel expertise needed.</div><div class="tags"><span class="tag">Analytics</span><span class="tag">Data</span><span class="tag">Dashboards</span></div><button class="srv-toggle" onclick="toggleSrv(this)">See what&rsquo;s included <i class="ti ti-chevron-down"></i></button><div class="srv-details"><ul><li>Turn raw HR data into readable summaries using AI</li><li>Analyze performance ratings and evaluation results</li><li>Build simple KPI dashboards without advanced Excel skills</li><li>Create clear data narratives for leadership</li><li>Interpret HR metrics that drive decisions</li></ul></div></div>
+    <div class="srv-card"><div class="srv-icon"><i class="ti ti-settings"></i></div><div class="srv-title">Process Improvement</div><div class="srv-desc">Practical automation using forms and workflow tools. Save hours on repetitive HR tasks every week.</div><div class="tags"><span class="tag">Workflow</span><span class="tag">Automation</span></div><button class="srv-toggle" onclick="toggleSrv(this)">See what&rsquo;s included <i class="ti ti-chevron-down"></i></button><div class="srv-details"><ul><li>Identify repetitive HR tasks that can be automated</li><li>Set up simple form &amp; workflow tools for HR processes</li><li>Map and redesign HR workflows for efficiency</li><li>Apply HR process optimization techniques with AI</li><li>Save hours every week on admin-heavy HR work</li></ul></div></div>
+    <div class="srv-card"><div class="srv-icon"><i class="ti ti-star"></i></div><div class="srv-title">HR Career Coaching</div><div class="srv-desc">Resume review, interview prep, and career direction &mdash; from an HR professional who&rsquo;s been on both sides of the table.</div><div class="tags"><span class="tag">Resume</span><span class="tag">Interview</span><span class="tag">Career</span></div><button class="srv-toggle" onclick="toggleSrv(this)">See what&rsquo;s included <i class="ti ti-chevron-down"></i></button><div class="srv-details"><ul><li>Resume review and rewrite using AI-assisted writing</li><li>Interview prep &mdash; common HR questions &amp; best answers</li><li>Career path guidance for aspiring &amp; practicing HR pros</li><li>Build your personal HR brand and LinkedIn presence</li><li>Advice from someone who&rsquo;s hired &mdash; and been hired &mdash; in HR</li></ul></div></div>
   </div>
 </section>
 
@@ -229,20 +343,20 @@ footer{border-top:1px solid #f0f0f0;padding:1.65rem;text-align:center;color:#9ca
       <div class="tier">Starter Session</div>
       <div class="pdesc">A 1-hour intro private session via Google Meet. Perfect if you're new to AI tools and want to see how they apply to your actual HR work.</div>
       <ul class="feats"><li>1-on-1 private session</li><li>Topic of your choice</li><li>Beginner-friendly pace</li><li>Q&amp;A included</li></ul>
-      <button class="btn-p" style="width:100%;font-size:0.8rem;padding:9px;" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Inquire now</button>
+      <button class="btn-p" style="width:100%;font-size:0.8rem;padding:9px;" onclick="openModal()">Inquire now</button>
     </div>
     <div class="price-card featured">
       <div class="popular">Most Popular</div>
       <div class="tier">Deep-Dive Session</div>
       <div class="pdesc">A focused session on a specific HR + AI topic you want to master. Hands-on, practical, and tailored to your role and goals.</div>
       <ul class="feats"><li>1-on-1 private session</li><li>Advanced topic coverage</li><li>Hands-on practice</li><li>Session notes included</li></ul>
-      <button class="btn-p" style="width:100%;font-size:0.8rem;padding:9px;" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Inquire now</button>
+      <button class="btn-p" style="width:100%;font-size:0.8rem;padding:9px;" onclick="openModal()">Inquire now</button>
     </div>
     <div class="price-card">
       <div class="tier">Bundle Package</div>
       <div class="pdesc">A series of sessions for those who want consistent progress. Flexible scheduling with priority booking and progress tracking.</div>
       <ul class="feats"><li>Multiple private sessions</li><li>Flexible scheduling</li><li>Progress tracking</li><li>Priority booking</li></ul>
-      <button class="btn-p" style="width:100%;font-size:0.8rem;padding:9px;" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Inquire now</button>
+      <button class="btn-p" style="width:100%;font-size:0.8rem;padding:9px;" onclick="openModal()">Inquire now</button>
     </div>
   </div>
   <div class="inquire-note">
@@ -256,7 +370,7 @@ footer{border-top:1px solid #f0f0f0;padding:1.65rem;text-align:center;color:#9ca
   <div class="s-label" style="text-align:center;">Get started</div>
   <h2>Let's make HR work easier and more meaningful.</h2>
   <p>Limited slots for 1-on-1 and small group sessions (2&ndash;3 pax).<br/><br/>Online via Google Meet,<br/>or in-person within Metro Manila.</p>
-  <button class="btn-p" style="font-size:0.92rem;padding:13px 30px;" onclick="window.location.href='mailto:connectwithjeng@gmail.com'">Connect with me</button>
+  <button class="btn-p" style="font-size:0.92rem;padding:13px 30px;" onclick="openModal()">Connect with me</button>
   <div class="pills">
     <div class="pill"><strong>Online</strong> &mdash; Google Meet</div>
     <div class="pill"><strong>In-Person</strong> &mdash; within Metro Manila</div>
@@ -279,6 +393,47 @@ function toggleAbout(){
   var isOpen=full.classList.contains("expanded");
   if(isOpen){full.classList.remove("expanded");btn.classList.remove("open");btn.childNodes[0].textContent="Read my full story ";}
   else{full.classList.add("expanded");btn.classList.add("open");btn.childNodes[0].textContent="Show less ";}
+}
+function toggleSkills(){
+  var full=document.getElementById("skillsFull");
+  var btn=document.getElementById("skillsBtn");
+  var isOpen=full.classList.contains("expanded");
+  if(isOpen){full.classList.remove("expanded");btn.classList.remove("open");btn.childNodes[0].textContent="My Skills ";}
+  else{full.classList.add("expanded");btn.classList.add("open");btn.childNodes[0].textContent="My Skills ";}
+}
+function toggleSrv(btn){
+  var details=btn.nextElementSibling;
+  var isOpen=details.classList.contains("open");
+  if(isOpen){details.classList.remove("open");btn.classList.remove("open");btn.childNodes[0].textContent="See what’s included ";}
+  else{details.classList.add("open");btn.classList.add("open");btn.childNodes[0].textContent="Show less ";}
+}
+function openModal(){
+  document.getElementById("inquiryModal").classList.add("open");
+  document.getElementById("modalForm").style.display="block";
+  document.getElementById("modalSuccess").style.display="none";
+  document.body.style.overflow="hidden";
+}
+function closeModal(){
+  document.getElementById("inquiryModal").classList.remove("open");
+  document.body.style.overflow="";
+}
+function closeModalOnOverlay(e){
+  if(e.target===document.getElementById("inquiryModal")) closeModal();
+}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeModal();});
+function submitInquiry(){
+  var name=document.getElementById("inquiryName").value.trim();
+  var email=document.getElementById("inquiryEmail").value.trim();
+  var message=document.getElementById("inquiryMessage").value.trim();
+  if(!name){alert("Please enter your name.");document.getElementById("inquiryName").focus();return;}
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){alert("Please enter a valid email address.");document.getElementById("inquiryEmail").focus();return;}
+  if(!message){alert("Please describe what you'd like help with.");document.getElementById("inquiryMessage").focus();return;}
+  var subject=encodeURIComponent("Session Inquiry from "+name);
+  var body=encodeURIComponent("Hi Jen,\n\nI'd like to inquire about a session.\n\nName: "+name+"\nEmail: "+email+"\n\nWhat I need help with:\n"+message+"\n\nLooking forward to hearing from you!");
+  window.location.href="mailto:connectwithjeng@gmail.com?subject="+subject+"&body="+body;
+  document.getElementById("modalForm").style.display="none";
+  document.getElementById("modalSuccess").style.display="block";
+  setTimeout(function(){closeModal();},4000);
 }
 </script>
 </body>
